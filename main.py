@@ -1,6 +1,5 @@
-from fastapi import FastAPI
-from fastapi import HTTPException
-from fastapi import status
+from fastapi import FastAPI, HTTPException, Response, status
+from fastapi.responses import JSONResponse
 from cursos import courses
 from models import Course
 
@@ -22,11 +21,12 @@ async def get_courses():
 async def get_course(id: int):
     course = [item for item in courses if item["id"] == id]
     if course:
-        return course[0]
+        item = course
+        return item
     else:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Usuário não encontrado.')
     
-@app.post("/cursos")
+@app.post("/cursos", status_code=status.HTTP_201_CREATED)
 async def create_course(course: Course):
     course_in_list = [item for item in courses if item["id"] == course.id]
     if not course_in_list:
@@ -34,3 +34,24 @@ async def create_course(course: Course):
         return {"message": "Curso cadastrado com sucesso."}
     else:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Problema com relação a id do curso.")
+    
+@app.put("/cursos/{course_id}")
+async def update_course(course_id: int, course: Course):
+    for item in courses:
+        if item["id"] == course_id:
+            item["title"] = course.title
+            item["lesson"] = course.lesson
+            item["hour"] = course.hour
+            return {"message": "Atualizado!!"}
+
+    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Curso não encontrado.")
+    
+@app.delete("/cursos/{course_id}")
+async def delete_course(course_id: int):
+    item_to_remove = {}
+    for item in courses:
+        if(item["id"] == course_id):
+            item_to_remove = item
+    
+    courses.remove(item_to_remove)
+    return Response(status_code=status.HTTP_201_CREATED)
