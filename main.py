@@ -63,7 +63,7 @@ async def update_course(course_id: int, course: Course):
 @app.delete("/cursos/{course_id}", tags=['courses'])
 async def delete_course(course_id: int):
     item_to_remove = next((item for item in courses if item["id"] == course_id), None)
-    if not item_to_remove:
+    if item_to_remove is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Curso não encontrado.')
     
     return Response(status_code=status.HTTP_204_NO_CONTENT)
