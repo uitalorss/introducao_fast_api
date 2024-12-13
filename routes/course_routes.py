@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, Response, Depends, APIRouter, status
 from typing import Any
 from cursos import courses
-from models import Course
+from course_models import Course
 from time import sleep
 
 
