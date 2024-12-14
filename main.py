@@ -11,10 +11,9 @@ app = FastAPI(
     description='API de teste para estudo do FastAPI',
     version='0.0.1')
 
+
+print("entrei aqui")
+
 app.include_router(default_routes.router, tags=["default"])
 app.include_router(course_routes.router, tags=["courses"])
 
-if __name__ == '__main__':
-    import asyncio
-
-    asyncio.run(create_tables())
