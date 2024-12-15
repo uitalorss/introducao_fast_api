@@ -26,7 +26,7 @@ async def get_cursos(db: AsyncSession = Depends(get_session)):
 
               return cursos
         
-@router.get("/{course_id}", status_code=status.HTTP_200_OK, response_model=CourseSchema)
+@router.get("/{curso_id}", status_code=status.HTTP_200_OK, response_model=CourseSchema)
 async def get_curso_by_id(curso_id: int, db: AsyncSession = Depends(get_session)):
       async with db as session:
             query = select(CursoModel).filter(CursoModel.id == curso_id)
@@ -46,7 +46,7 @@ async def update_curso(curso_id: int, curso: CourseSchema, db: AsyncSession = De
         curso_update = result.scalar_one_or_none()
 
         if curso_update is None:
-                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Curso não encontrado!")
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Curso não encontrado!")
         
         curso_update.title = curso.title
         curso_update.lesson = curso.lesson
@@ -64,8 +64,9 @@ async def delete_curso(curso_id: int, db: AsyncSession = Depends(get_session)):
         curso_delete = result.scalar_one_or_none()
 
         if curso_delete is None:
-                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Curso não encontrado!")
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Curso não encontrado!")
         
         await session.delete(curso_delete)
+        await session.commit()
 
         return Response(status_code=status.HTTP_204_NO_CONTENT)
