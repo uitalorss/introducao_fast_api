@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.curso_model import CursoModel
 from schemas.course_schema import CourseSchema
-from core.dependences import get_session
+from core.auth.dependences import get_session
 
 router = APIRouter()
 
