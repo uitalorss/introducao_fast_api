@@ -4,6 +4,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.responses import JSONResponse
 
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 
 from models.usuario_model import UsuarioModel
@@ -46,10 +47,14 @@ async def post_usuario(usuario: UsuarioSchemaCreate, db: AsyncSession = Depends(
     novo_usuario: UsuarioModel = UsuarioModel(nome=usuario.nome, email=usuario.email, senha=gera_hash_senha(usuario.senha), is_admin=usuario.is_admin)
 
     async with db as session:
-        session.add(novo_usuario)
-        await session.commit()
+        try:
+            session.add(novo_usuario)
+            await session.commit()
 
-        return novo_usuario
+            return novo_usuario
+        except IntegrityError:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email informado já cadastrado.")
+
     
 @router.post("/login")
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_session)):
@@ -60,7 +65,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSessi
     
     return JSONResponse(content={"access_token": criar_acesso_token(sub=usuario.id), "token_type": "bearer"}, status_code=status.HTTP_200_OK)
     
-@router.put("/{usuario_id}", response_model=UsuarioSchemaUpdate, status_code=status.HTTP_202_ACCEPTED)
+@router.put("/{usuario_id}", response_model=UsuarioSchemaBase, status_code=status.HTTP_202_ACCEPTED)
 async def put_usuario(usuario_id: int, usuario: UsuarioSchemaUpdate, db: AsyncSession = Depends(get_session)):
     async with db as session:
         query = select(UsuarioModel).filter(UsuarioModel.id == usuario_id)
@@ -70,16 +75,22 @@ async def put_usuario(usuario_id: int, usuario: UsuarioSchemaUpdate, db: AsyncSe
         if update_usuario is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado.")
         
-        if usuario.nome:
-            update_usuario.nome = usuario.nome
-        if usuario.email:
-            update_usuario.email = usuario.email
-        if usuario.senha:
-            update_usuario.senha = gera_hash_senha(usuario.senha)
+        try:
+            if usuario.nome:
+                update_usuario.nome = usuario.nome
+            if usuario.email:
+                update_usuario.email = usuario.email
+            if usuario.senha:
+                update_usuario.senha = gera_hash_senha(usuario.senha)
+            if usuario.is_admin:
+                update_usuario.is_admin = usuario.is_admin
 
-        await session.commit()
+            await session.commit()
 
-        return update_usuario
+            return update_usuario
+        
+        except IntegrityError:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email informado já cadastrado.")
     
 @router.delete("/{usuario_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_usuario(usuario_id: int, db:AsyncSession = Depends(get_session)):

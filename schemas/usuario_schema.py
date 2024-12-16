@@ -22,7 +22,7 @@ class UsuarioSchemaListArtigos(UsuarioSchemaBase):
     artigos: Optional[List[ArtigoSchema]]
 
 class UsuarioSchemaUpdate(UsuarioSchemaBase):
-    nome: Optional[str]
-    email: Optional[EmailStr]
-    senha: Optional[str]
-    is_admin: Optional[bool]
+    nome: Optional[str] = None
+    email: Optional[EmailStr] = None
+    senha: Optional[str] = None
+    is_admin: Optional[bool] = None
