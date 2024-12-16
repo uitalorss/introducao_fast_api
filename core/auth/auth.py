@@ -30,6 +30,8 @@ async def autenticar(email: EmailStr, senha: str, db: AsyncSession) -> Optional[
         return usuario
     
 def criar_token(tipo_token: str, tempo_vida: timedelta, sub: str) -> str:
+    print("to aqui criando o token")
+
     payload = {}
     timezone_ba = timezone("America/Bahia")
     expira = datetime.now(tz=timezone_ba) + tempo_vida
@@ -42,4 +44,5 @@ def criar_token(tipo_token: str, tempo_vida: timedelta, sub: str) -> str:
     return jwt.encode(payload, settings.JWT_KEY, algorithm=settings.ALGORITHM)
 
 def criar_acesso_token(sub: str) -> str:
-    return criar_token(tipo_token="access_token", tempo_vida=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES, sub=sub))
+    print("to aqui")
+    return criar_token(tipo_token="access_token", tempo_vida=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES), sub=sub)

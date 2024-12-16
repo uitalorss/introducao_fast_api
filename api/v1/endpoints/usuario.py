@@ -62,7 +62,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSessi
 
     if not usuario:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email e/ou senha incorretos")
-    
+
     return JSONResponse(content={"access_token": criar_acesso_token(sub=usuario.id), "token_type": "bearer"}, status_code=status.HTTP_200_OK)
     
 @router.put("/{usuario_id}", response_model=UsuarioSchemaBase, status_code=status.HTTP_202_ACCEPTED)
@@ -97,7 +97,7 @@ async def delete_usuario(usuario_id: int, db:AsyncSession = Depends(get_session)
     async with db as session:
         query = select(UsuarioModel).filter(UsuarioModel.id == usuario_id)
         result = await session.execute(query)
-        delete_usuario: UsuarioSchemaBase = result.scalars().unique().one_or_none
+        delete_usuario: UsuarioSchemaBase = result.scalars().unique().one_or_none()
 
         if delete_usuario is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado.")

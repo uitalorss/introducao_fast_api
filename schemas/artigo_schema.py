@@ -10,3 +10,8 @@ class ArtigoSchema(SCBasemodel):
 
     class Config:
         orm_mode = True
+
+class ArtigoSchemaUpdate(ArtigoSchema):
+    titulo: Optional[str] = None
+    descricao: Optional[str] = None
+    url_fonte: Optional[HttpUrl] = None
