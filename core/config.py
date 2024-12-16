@@ -7,15 +7,8 @@ import dotenv
 dotenv.load_dotenv()
 
 class Settings(BaseSettings):
-    DB_NAME: ClassVar[str] = os.getenv("DB_NAME")
-    DB_HOST: ClassVar[str] = os.getenv("DB_HOST")
-    DB_PORT: ClassVar[str] = os.getenv("DB_PORT")
-    DB_USER: ClassVar[str] = os.getenv("DB_USER")
-    DB_PASS: ClassVar[str] = os.getenv("DB_PASS")
-    DB_BANCO: str = "postgresql+asyncpg"
-
     API_V1_STR: ClassVar[str] = "/api/v1"
-    DB_URL: ClassVar[str] = f"{DB_BANCO}://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}" #'postgresql+asyncpg://postgres:postgres@localhost:5432/faculdade'
+    DB_URL: ClassVar[str] = "sqlite+aiosqlite:///./dev.db" #'postgresql+asyncpg://postgres:postgres@localhost:5432/faculdade'
     DBBaseModel: ClassVar[DeclarativeMeta] = declarative_base()
 
     JWT_KEY: str = os.getenv("JWT_KEY")
