@@ -1,4 +1,4 @@
-from typing import List, Optional, Any
+from typing import List
 from fastapi import APIRouter, status, Depends, HTTPException, Response
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.responses import JSONResponse
@@ -32,7 +32,7 @@ async def get_usuarios(db: AsyncSession = Depends(get_session)):
 async def get_usuario(usuario_id: int, db: AsyncSession = Depends(get_session)):
     async with db as session:
         query = select(UsuarioModel).filter(UsuarioModel.id == usuario_id)
-        result = await suession.execute(query)
+        result = await session.execute(query)
         usuario: UsuarioSchemaListArtigos  = result.scalars().unique().one_or_none()
 
         if usuario is None:
