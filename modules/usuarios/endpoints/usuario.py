@@ -5,9 +5,9 @@ from fastapi.responses import JSONResponse
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models.usuario_model import UsuarioModel
-from schemas.usuario_schema import UsuarioSchemaBase, UsuarioSchemaCreate, UsuarioSchemaListArtigos, UsuarioSchemaUpdate
-from services.usuario_service import criar_usuario, pegar_usuario, pegar_todos_usuarios, atualizar_usuario, deletar_usuario
+from modules.usuarios.models.usuario_model import UsuarioModel
+from modules.usuarios.schemas.usuario_schema import UsuarioSchemaBase, UsuarioSchemaCreate, UsuarioSchemaListArtigos, UsuarioSchemaUpdate
+from modules.usuarios.services.usuario_service import criar_usuario, pegar_usuario, pegar_todos_usuarios, atualizar_usuario, deletar_usuario
 
 from core.auth.dependences import get_session, obter_usuario_atual
 from core.auth.auth import autenticar, criar_acesso_token

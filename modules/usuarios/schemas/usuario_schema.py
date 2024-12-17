@@ -1,7 +1,7 @@
 from typing import Optional, List
 from pydantic import BaseModel as SCBasemodel, EmailStr
 
-from schemas.artigo_schema import ArtigoSchema
+from modules.artigos.schemas.artigo_schema import ArtigoSchema
 
 class UsuarioSchemaBase(SCBasemodel):
     id: Optional[int] = None

@@ -11,7 +11,7 @@ from pydantic import BaseModel
 from core.database import Session
 from core.auth.auth import oauth_schema
 from core.config import settings
-from models.usuario_model import UsuarioModel
+from modules.usuarios.models.usuario_model import UsuarioModel
 
 async def get_session() -> AsyncGenerator:
     session: AsyncSession = Session()

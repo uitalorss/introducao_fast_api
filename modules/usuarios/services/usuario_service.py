@@ -5,9 +5,9 @@ from sqlalchemy.future import select
 
 from core.auth.security import gera_hash_senha
 
-from models.usuario_model import UsuarioModel
+from modules.usuarios.models.usuario_model import UsuarioModel
 
-from schemas.usuario_schema import UsuarioSchemaBase, UsuarioSchemaCreate, UsuarioSchemaListArtigos, UsuarioSchemaUpdate
+from modules.usuarios.schemas.usuario_schema import UsuarioSchemaBase, UsuarioSchemaCreate, UsuarioSchemaListArtigos, UsuarioSchemaUpdate
 
 async def criar_usuario(usuario: UsuarioSchemaCreate, db:AsyncSession):
     novo_usuario: UsuarioModel = UsuarioModel(nome=usuario.nome, email=usuario.email, senha=gera_hash_senha(usuario.senha), is_admin=usuario.is_admin)

@@ -3,10 +3,10 @@ from fastapi import APIRouter, status, Depends, HTTPException, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from models.artigo_model import ArtigoModel
-from models.usuario_model import UsuarioModel
-from schemas.artigo_schema import ArtigoSchema, ArtigoSchemaUpdate
-from services.artigo_service import criar_artigo, listar_todos_artigos, pegar_artigo, atualizar_artigo, deletar_artigo
+from modules.artigos.models.artigo_model import ArtigoModel
+from modules.usuarios.models.usuario_model import UsuarioModel
+from modules.artigos.schemas.artigo_schema import ArtigoSchema, ArtigoSchemaUpdate
+from modules.artigos.services.artigo_service import criar_artigo, listar_todos_artigos, pegar_artigo, atualizar_artigo, deletar_artigo
 
 from core.auth.dependences import get_session, obter_usuario_atual
 
